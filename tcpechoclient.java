@@ -17,7 +17,8 @@ class tcpechoclient {
             sc.connect(new InetSocketAddress(ipAddressInfo, portInfo));
             Console cons = System.console();
             //user filename input
-            ByteBuffer buf = ByteBuffer.wrap(getFileName(cons).getBytes());
+            String fileName = getFileName(cons);
+            ByteBuffer buf = ByteBuffer.wrap(fileName.getBytes());
             sc.write(buf);
             ByteBuffer buf2 = ByteBuffer.allocate(5000);
             sc.read(buf2);
@@ -25,7 +26,17 @@ class tcpechoclient {
             byte[] a = new byte[buf2.remaining()];
             buf2.get(a);
             String message = new String(a);
-            System.out.println("Got from server: " + message);
+            //file found or not
+            if(!message.equals("File not found: " + fileName)){
+                System.out.println("File "+ fileName + " was found by the server and was saved to a new file.");
+                //write into file
+                PrintWriter writeToFile = new PrintWriter("fromServer"+fileName, "UTF-8");
+                writeToFile.println(message);
+                writeToFile.close();
+            }
+            else{
+                System.out.println(message);
+            }
             sc.close();
         } catch (IOException e) {
             System.out.println("Got an Exception: " + e);
