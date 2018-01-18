@@ -17,8 +17,7 @@ class tcpechoclient {
             sc.connect(new InetSocketAddress(ipAddressInfo, portInfo));
             Console cons = System.console();
             //user filename input
-            String filename = cons.readLine("Enter your file name: ");
-            ByteBuffer buf = ByteBuffer.wrap(filename.getBytes());
+            ByteBuffer buf = ByteBuffer.wrap(getFileName(cons).getBytes());
             sc.write(buf);
             ByteBuffer buf2 = ByteBuffer.allocate(5000);
             sc.read(buf2);
@@ -40,7 +39,7 @@ class tcpechoclient {
     }
 
     public static String ipAddress(Scanner scan) {
-        System.out.println("Enter a an IP address to connect to:");
+        System.out.println("Enter an IP address to connect to:");
         String info = scan.next();
         return info;
     }
